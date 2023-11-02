@@ -9,14 +9,20 @@ jobs:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:18
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "73:e8:c5:f5:7c:59:ca:75:18:8e:ef:9e:a3:af:1f:85"
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: "Install"
+          command: "npm install"
+      - run:
+          name: "Build"
+          command: "npm build"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
