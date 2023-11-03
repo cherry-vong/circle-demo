@@ -2,14 +2,18 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+orbs:
+  win: circleci/windows@4.1.1 # The Windows orb give you everything you need to start using the Windows executor.
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   say-hello:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: circleci/node:18
+    executor:
+      name: win/default # executor type
+      size: medium # can be medium, large, xlarge, 
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
