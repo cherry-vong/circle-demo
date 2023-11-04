@@ -7,7 +7,7 @@ orbs:
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
-jobs:git
+jobs:
   say-hello:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
@@ -21,12 +21,27 @@ jobs:git
           fingerprints:
             - "73:e8:c5:f5:7c:59:ca:75:18:8e:ef:9e:a3:af:1f:85"
       - checkout
+      - restore_cache:
+          keys:
+            - dependencies_wanzi
       - run:
           name: "Install"
           command: "npm install"
+      - save_cache:
+          key: dependencies_wanzi
+          paths:
+            - node_modules
       - run:
           name: "Build"
-          command: "npm build"
+          command: "npm run build"
+      - run:
+          name: "Prepare shell commands"
+          # shell chmod +x 赋予执行权限
+          # 执行shell脚本
+          command: "chmod +x scripts/deploy.sh"
+      - run:
+          name: "Run Deploy to GitHub pages"
+          command: "./scripts/deploy.sh"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
